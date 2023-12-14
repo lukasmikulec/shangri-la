@@ -1,9 +1,6 @@
 # import the library for getting API
 import requests
 
-# import the function for securely handling API tokens
-from dotenv import load_dotenv
-
 # import the library for accessing environment variables
 import os
 
@@ -13,11 +10,9 @@ import time
 # import streamlit to create widgets to be displayed in the main app
 import streamlit as st
 
-# set environment variables from the keys.env file containing API tokens
-load_dotenv("keys.env")
 
 # load the PONS API KEY from the keys.env to a string variable used for calling the API
-api_key = os.environ.get('API_KEY')
+api_key = st.secrets["API_KEY"]
 
 def get_the_object_name(image):
 	# define the API url
