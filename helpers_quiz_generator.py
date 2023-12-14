@@ -1,9 +1,6 @@
 # import the library for getting API
 import requests
 
-# import the function for securely handling API tokens
-from dotenv import load_dotenv
-
 # import the library for accessing environment variables
 import os
 
@@ -19,11 +16,8 @@ from datetime import datetime
 # import library to reshuffle quiz items randomly
 import random
 
-# set environment variables from the keys.env file containing API tokens
-load_dotenv("keys.env")
-
 # load the PONS API KEY from the keys.env to a string variable used for calling the API
-api_key = os.environ.get('API_KEY')
+api_key = api_key = st.secrets["API_KEY"]
 
 def generate_sentence(word):
 	# define the API url
