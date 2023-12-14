@@ -18,7 +18,10 @@ def get_the_object_name(image):
 	# define the API url
 	url = "https://api-inference.huggingface.co/models/google/vit-base-patch16-224"
 	# define the headers for authorization of access to the API
-	headers = {"Authorization": f"Bearer {api_key}"}
+	headers = {'Accept': '*/*',
+ 'Accept-Encoding': 'identity, deflate, compress, gzip',
+ 'Authorization': f"Bearer {api_key}",
+ 'User-Agent': 'python-requests/0.12.1'}
 	# prepare the image to the format readable by API
 	image = image.read()
 	# set this variable as empty string which will later receive the status message from API
