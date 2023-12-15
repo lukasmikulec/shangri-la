@@ -23,7 +23,10 @@ def generate_sentence(word):
 	# define the API url
 	url = "https://api-inference.huggingface.co/models/stefan-it/german-gpt2-larger"
 	# define the headers for authorization of access to the API
-	headers = {"Authorization": f"Bearer {api_key}"}
+	headers = {'Accept': '*/*',
+ 'Accept-Encoding': 'identity, deflate, compress, gzip',
+ 'Authorization': f"Bearer {api_key}",
+ 'User-Agent': 'python-requests/0.12.1'}
 	# set this variable as empty string which will later receive the status message from API
 	api_status_sentence_generation = ""
 	# set this variable as 0 (no request to API made yet)
