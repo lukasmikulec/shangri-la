@@ -110,7 +110,7 @@ def generate_quiz(word_list):
 	# remove the plurals from the generated words and put them into the quiz_words list
 	for i in range(len(word_list)):
 		# take the first word from the original word list
-		word = word_list[i]
+		word = word_list[i][0]
 		# remove the plural form after the comma (removes comma and space too)
 		word = word[:word.find(",")]
 		# take the first letter of the word and capitalize it

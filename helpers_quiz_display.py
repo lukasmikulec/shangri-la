@@ -1,28 +1,7 @@
 import streamlit as st
 
-# import module which enables working with HTMl that will display X share button
-import streamlit.components.v1 as components
-
-# define a function which will create a txt file with the German object words that user can download
-def write_into_a_txt_file(list_of_translations):
-    # open a new txt file in a variable and allow for writing
-    file = open("words.txt", "w")
-    # write one object on one line and repeat until all words have been written
-    for i in range(len(list_of_translations)):
-        file.write(f"{list_of_translations[i]}\n")
-    # close the file so it can be downloaded
-    file.close()
-    # return the name of the file to the download button in the main app
-    return "words.txt"
-
-# define a function which will show the X share button
-def display_share_button(i):
-    # use the components module to be able to embded X HTML code for X sharing button
-    components.html(
-        f"""
-            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="Did you know the German name of this everyday object? {st.session_state["result"][i]}" data-url="https://www.leuphana.de/" data-hashtags="Streamschatz" data-lang="en" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-        """
-    )
+# import the function to generate txt files
+from helpers_small_functions import create_sentences_txt_file
 
 # define a list which to which one element will be added after one correct answer and which will unlock the
 # last tab with summary
@@ -90,16 +69,27 @@ def display_quiz():
             # if all questions are correctly answered
             if len(all_questions_answered) == 3:
                 st.markdown("Here is a list of all sentences from this quiz:")
-                # give a list of all sentences
+                # give a list of all sentences with the words in bold
                 for i in range(3):
-                    st.markdown(f'{i+1}. {st.session_state["quiz_sentences"][i]}')
+                    # split each sentence into words (list of words)
+                    sentence_split_into_words = st.session_state["quiz_sentences"][i].split()
+                    # take the first two words (first two items in a list)
+                    first_two_words = sentence_split_into_words[:2]
+                    # join them into one string
+                    first_two_words = " ".join(first_two_words)
+                    # take the rest of the words
+                    rest_of_the_sentence = sentence_split_into_words[2:]
+                    # join them into one string
+                    rest_of_the_sentence = " ".join(rest_of_the_sentence)
+                    # display the sentences with the first two in bold
+                    st.markdown(f'{i+1}. **{first_two_words}** {rest_of_the_sentence}')
 
                 # assign the output of the txt generating function to this variable
-                file = write_into_a_txt_file(st.session_state["quiz_sentences"])
+                file = create_sentences_txt_file(st.session_state["quiz_sentences"])
                 # open this file variable for interaction
                 with open(file, "rb") as f:
                     # show download button for the user to download sentences
-                    st.download_button("Download sentences as a txt file", data=f, file_name="sentences.txt")
+                    st.download_button("📥 Download sentences as a txt file", data=f, file_name="sentences.txt")
 
                 # celebrate the successful quiz
                 st.balloons()

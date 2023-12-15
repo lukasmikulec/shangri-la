@@ -97,8 +97,8 @@ def get_the_translation(text):
 		translation = translation[0]
 		# get the string value from the translation_text parameter
 		translation = translation["translation_text"]
-		# return the value
-		return translation
+		# return the translation and also the original input
+		return translation, translation_input
 	# if the API connection failed, return error to the process function
 	else:
 		return "ERROR"
@@ -140,12 +140,13 @@ def process(images):
 					status.update(label=f"Processing your images ({percentage-percentage_increase}% completed)")
 					# write to the status that the translation is being received (second part)
 					st.write(f"Fetching the German name of the object on the image *{image.name}*")
-					# pass object_name to the translation function
-					translation = get_the_translation(object_name)
+					# pass object_name to the translation function and also get the original value
+					translation, original_input = get_the_translation(object_name)
 					# if the API works and does not return an error
 					if translation != "ERROR":
-						# assign the translation to the list of translations to be used in the main app
-						list_of_translations.append(translation)
+						# assign the translation and the original input to the list of translations
+						# to be used in the main app
+						list_of_translations.append([translation, original_input])
 					else:
 						# otherwise say this item returned an error (due to API error)
 						list_of_translations.append("ERROR")
@@ -175,4 +176,6 @@ def process(images):
 	# (for example after an interaction with a widget) and are valid for the whole session
 	st.session_state["result"] = list_of_translations
 	st.session_state["number_of_items"] = number_of_items
+
+	st.session_state["no_menu_changing"] = False
 

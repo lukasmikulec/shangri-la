@@ -1,12 +1,19 @@
 # import the library to create the app
 import streamlit as st
 
+# import library to embed animations
+import streamlit.components.v1 as com
+
 # import the function to get the translation
 from helpers_process import process
 
-# import the function to generate txt files out of the result
-from helpers_small_functions_and_quiz_display import write_into_a_txt_file, display_share_button, display_quiz
+# import the function to display quiz
+from helpers_quiz_display import display_quiz
 
+# import the function to generate txt files, display share and wiktionary buttons
+from helpers_small_functions import create_words_txt_file, display_share_button, display_wiktionary_link
+
+# import the function to generate the quiz
 from helpers_quiz_generator import generate_quiz
 
 # define a function which will be called after the user submits images (Submit button)
@@ -15,10 +22,9 @@ def enable_process():
     st.session_state["run_process"] = True
     # this session state key change will disable the upload and submit button after user clicks Submit
     st.session_state["input_disabled"] = True
+    # disable menu changing during the translation generation process to prevent errors
+    st.session_state["no_menu_changing"] = True
 
-# function that will unlock the select box in the sidebar
-def unlock_quiz():
-    st.session_state["no_menu_changing"] = False
 
 # configure the web app
 st.set_page_config(page_title="Streetschatz", page_icon="🧭")
@@ -38,28 +44,40 @@ if "process_finished" not in st.session_state:
     # no uploaded images yet so we are missing input for the function.
     st.session_state["run_process"] = False
 
-    # this key disables the quiz functionality until at least 3 images have been uploaded and processed
-    # do not allow user to change the mode to quiz until user uploads 3 or more images
-    st.session_state["no_menu_changing"] = True
+    # the user can freely use the menu
+    st.session_state["no_menu_changing"] = False
+
+    st.session_state["number_of_items"] = 0
 
 # define menu options
-menu = ["Streetschatz", "Streetschatz Quiz"]
+menu = ["Identify German words", "Take a quiz", "About"]
 
 # create a dropdown menu for the sidebar
 choice = st.sidebar.selectbox("Mode", menu, disabled=st.session_state["no_menu_changing"])
-st.sidebar.markdown("To change mode to Streetschatz Quiz, upload at least 3 images.")
 
 # place an image of a treasure box
 st.image("images/treasure_box.png", width=200)
 
-# if the user chooses Streetschatz page (is also the default to display)
-if choice == "Streetschatz":
+# if the user chooses the main page for identifying German words (is also the default to display)
+if choice == "Identify German words":
 
     # place the heading
     st.header("Welcome to Streetschatz", divider="blue")
 
-    # display text
-    st.markdown("Let's get the names of those treasures of Alltag!")
+    # create a column structure
+    col_1, col_2, col_3 = st.columns(3)
+
+    with col_1:
+        com.iframe("https://lottie.host/embed/3aa490a0-3ce7-4bf1-b351-b9012e3d45c6/f4vXV46B9x.json")
+        st.markdown("1. Upload pictures of objects from your everyday life to Streetschatz.")
+
+    with col_2:
+        com.iframe("https://lottie.host/embed/bd0c1bf9-fd98-4e3e-b274-b2c46d713249/Mq1sACVbDe.json")
+        st.markdown("2. Get their German names automatically.")
+
+    with col_3:
+        com.iframe("https://lottie.host/embed/bdf526e9-4daa-4b7c-a996-e3c2c3e9d5c3/Z6Ak0D0AMw.json")
+        st.markdown("3. Upload 3 or more images to take a quiz after upload (left sidebar).")
 
     # let user upload images to get the German names of objects on them at the end
     uploaded_photos = st.file_uploader("Upload your photos", type=["jpg", "png", "jpeg"],
@@ -101,8 +119,10 @@ if choice == "Streetschatz":
 
             with c1:
                 # display the output of the process function (the German name of the object on the picture)
-                st.header(st.session_state["result"][i])
-                display_share_button(i)
+                st.markdown(st.session_state["result"][i][1])
+                st.header(st.session_state["result"][i][0])
+                display_share_button(st.session_state["result"][i][0])
+                display_wiktionary_link(st.session_state["result"][i][0])
 
             with c2:
                 # display the image from the user
@@ -112,39 +132,58 @@ if choice == "Streetschatz":
 
         # this is where the display code ends
 
-        # after the process of generating translations finishes, set the key in session state to True
-        st.session_state["process_finished"] = True
+        # if this is the first time running the process
+        if st.session_state["process_finished"] == False:
+            # after the process of generating translations finishes, set the key in session state to True
+            st.session_state["process_finished"] = True
+            # rerun the whole script to update the status of the selectbox (unlock it after the process run)
+            # based on the new value of st.session_state["no_menu_changing"]
+            st.rerun()
 
         # if the process of generating translations finished already, show the download txt file button
         if st.session_state["process_finished"] == True:
             # assign the output of the txt generating function to this variable
-            file = write_into_a_txt_file(st.session_state["result"])
+            file = create_words_txt_file(st.session_state["result"])
             # open this file variable for interaction
             with open(file, "rb") as f:
                 # show download button for the user
-                st.download_button("Download words as a txt file", data=f, file_name="words.txt")
+                st.download_button("📥 Download words as a txt file", data=f, file_name="words.txt")
         # if translations were not yet generated, do not display the txt download button
         else:
             pass
 
+
         # if 3 or more images were uploaded, inform the user they can use the Quiz functionality
-        if st.session_state["number_of_items"] >= 3:
+        if st.session_state["number_of_items"] >= 3 and "turn_toast_off" not in st.session_state:
             # display the pop-up notification
-            st.toast("3 or more images! You can take a quiz by changing the mode in menu on left!", icon="🎉")
-            st.button("Unlock quiz feature", on_click=unlock_quiz)
+            st.toast("3 or more images! Take a quiz in the left menu!", icon="🎉")
+            with st.empty():
+                st.sidebar.markdown("⬆️ Take the quiz here! ⬆️")
+                st.sidebar.empty()
+            st.session_state["turn_toast_off"] = True
         else:
             pass
     else:
         # wait for the user to upload the images
         pass
 
-# if the user chooses Streetschatz Quiz page
-elif choice == "Streetschatz Quiz":
+# if the user chooses the quiz page
+elif choice == "Take a quiz":
     # place the heading
     st.header("Welcome to Streetschatz Quiz", divider="blue")
 
-    # if the quiz was not yet generated, run the generate quiz
-    if "quiz_sentences" not in st.session_state:
-        generate_quiz(st.session_state["result"])
+    if st.session_state["number_of_items"] < 3:
+        st.info("To use the quiz function, upload at least 3 images.", icon="ℹ️")
+    else:
+        # if the quiz was not yet generated, run the generate quiz
+        if "quiz_sentences" not in st.session_state:
+            generate_quiz(st.session_state["result"])
 
-    display_quiz()
+        display_quiz()
+
+# if the user chooses the about page
+elif choice == "About":
+    # place the heading
+    st.header("About Streetschatz", divider="blue")
+    # place the about text
+    st.markdown("This is the about page.")
