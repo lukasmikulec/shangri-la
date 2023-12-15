@@ -103,14 +103,15 @@ def get_the_translation(text):
 	else:
 		return "ERROR"
 
-# define a variable which will store the list of translations for each image uploaded
-list_of_translations = []
-# define a variable which stores the length of the images for main app to know how many items
-# need to be displayed
-number_of_items = None
 
 # put the functions for analysing objects and then translating them into German together
 def process(images):
+	# define a variable which will store the list of translations for each image uploaded
+	list_of_translations = []
+	# define a variable which stores the length of the images for main app to know how many items
+	# need to be displayed
+	number_of_items = None
+
 	# define percentage as 0 (will be used to display the progress of the function in st.status)
 	percentage = 0
 	# do everything within a with st.status function to enable display the progress of function to the user

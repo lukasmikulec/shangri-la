@@ -16,6 +16,7 @@ from helpers_small_functions import create_words_txt_file, display_share_button,
 # import the function to generate the quiz
 from helpers_quiz_generator import generate_quiz
 
+
 # define a function which will be called after the user submits images (Submit button)
 def enable_process():
     # this session state key change will allow the processing of the images to run

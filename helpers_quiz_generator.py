@@ -97,14 +97,15 @@ def generate_audio(sentence):
 		return "ERROR"
 
 
-# define a variable which will store the list of sentence for each word
-list_of_sentences = []
-# define a variable which stores the number of sentences
-number_of_items = None
-# define a variable which will store the list of audios
-list_of_audios = []
+
 
 def generate_quiz(word_list):
+	# define a variable which will store the list of sentence for each word
+	list_of_sentences = []
+	# define a variable which stores the number of sentences
+	number_of_items = None
+	# define a variable which will store the list of audios
+	list_of_audios = []
 	# define a list in which quiz words will be stored (plural has to go away)
 	quiz_words = []
 	# remove the plurals from the generated words and put them into the quiz_words list
