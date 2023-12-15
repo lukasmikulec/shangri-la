@@ -144,7 +144,7 @@ def generate_quiz(word_list):
 				# display the current percentage state in st.status (after successful step)
 				status.update(label=f"Generating the quiz ({percentage-percentage_increase}% completed)")
 				# write to the status that a sentence including the word is generated (first part)
-				st.write(f"Generating sentence with the word number {i+1}")
+				st.write(f"✍️ Writing sentence with the word number {i+1}")
 				# get the sentence which includes the word and assign it to a variable sentence
 				sentence = generate_sentence(quiz_word)
 				# if the API works correctly and does not return an error
@@ -154,7 +154,7 @@ def generate_quiz(word_list):
 					# display the current percentage state in st.status
 					status.update(label=f"Generating the quiz ({percentage-percentage_increase}% completed)")
 					# write to the status that the audio is being created (second part)
-					st.write(f"Creating audio for the sentence number {i+1}")
+					st.write(f"🎤 Narrating the audio for the sentence number {i+1}")
 					# add the sentence to the list
 					list_of_sentences.append(sentence)
 					# pass audio to the generate audio function#

@@ -130,7 +130,7 @@ def process(images):
 				# display the current percentage state in st.status (after successful step)
 				status.update(label=f"Processing your images ({percentage-percentage_increase}% completed)")
 				# write to the status that the object is being identified on the image (first part)
-				st.write(f"Identifying the object on the image *{image.name}*")
+				st.write(f"🔎 Identifying the object on the image *{image.name}*")
 				# get the object name from the picture and assign it to a variable object_name
 				object_name = get_the_object_name(image)
 				# if the API works correctly and does not return an error
@@ -140,7 +140,7 @@ def process(images):
 					# display the current percentage state in st.status
 					status.update(label=f"Processing your images ({percentage-percentage_increase}% completed)")
 					# write to the status that the translation is being received (second part)
-					st.write(f"Fetching the German name of the object on the image *{image.name}*")
+					st.write(f"📰 Fetching the German name of the object on the image *{image.name}*")
 					# pass object_name to the translation function and also get the original value
 					translation, original_input = get_the_translation(object_name)
 					# if the API works and does not return an error
