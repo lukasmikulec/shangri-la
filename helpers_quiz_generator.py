@@ -120,6 +120,11 @@ def generate_quiz(word_list):
 	# to know which words to choose from when answering the question
 	quiz_help = []
 
+	# if there are more than 5 words that were generated
+	if len(word_list) > 5:
+		# choose 5 words out of them randomly for the quiz
+		word_list = random.sample(word_list, 5)
+
 	# remove the plurals from the generated words and put them into the quiz_words list
 	for i in range(len(word_list)):
 		# take the German words from the original word list
