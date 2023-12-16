@@ -1,3 +1,4 @@
+# import the library to interact with the GUI
 import streamlit as st
 
 # import module which enables working with HTMl that will display X share button
@@ -7,7 +8,7 @@ import streamlit.components.v1 as components
 def create_words_txt_file(list_of_translations):
     # open a new txt file in a variable and allow for writing
     file = open("words.txt", "w")
-    # write one object on one line and repeat until all words have been written
+    # write a German-English pair, leave space, and repeat until all word-pairs have been written
     for i in range(len(list_of_translations)):
         file.write(f"DE: {list_of_translations[i][0]}\nEN: {list_of_translations[i][1]}\n\n")
     # close the file so it can be downloaded
@@ -24,15 +25,15 @@ def display_share_button(word):
         """
     )
 
-# define a function which will display a link to Wikitonary
+# define a function which will display a link to Wiktionary
 def display_wiktionary_link(word):
     # split the whole string into a list of words
     words = word.split()
-    # select the second word (the actual term which comes after the article)
+    # select the second word (the actual term in singular which comes after the article)
     term = words[1]
     # remove the comma at the end
     term = term[:-1]
-    # display the button
+    # display the button with dynamically created URL
     st.link_button("🔗 View more on Wikitionary", f"https://en.wiktionary.org/wiki/{term}#German")
 
 
@@ -40,10 +41,10 @@ def display_wiktionary_link(word):
 def create_sentences_txt_file(list_of_sentences):
     # open a new txt file in a variable and allow for writing
     file = open("sentences.txt", "w")
-    # write one object on one line and repeat until all words have been written
+    # write one sentence on one line, leave space, and repeat until all sentences have been written
     for i in range(len(list_of_sentences)):
         file.write(f"{i+1}. {list_of_sentences[i]}\n\n")
     # close the file so it can be downloaded
     file.close()
-    # return the name of the file to the download button in the main app
+    # return the name of the file to the download button in the quiz summary tab
     return "sentences.txt"

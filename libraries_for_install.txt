@@ -1,0 +1,9 @@
+Libraries to install:
+pip install requests
+pip install streamlit
+
+Installing the virtual environment on Windows:
+pip3 install virtualenv
+python -m venv dev
+.\dev\Scripts\activate
+pip freeze

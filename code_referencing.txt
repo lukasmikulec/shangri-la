@@ -1,0 +1,45 @@
+BARD help
+
+How to work with APIs in Python:
+https://youtu.be/9P5MY_2i7K8
+
+How to work securely with API tokens:
+https://www.youtube.com/watch?v=c42T5wKSztQ
+
+Code for working with the object identifier AI model:
+https://huggingface.co/google/vit-base-patch16-224
+
+Code for working with the translation model:
+https://huggingface.co/facebook/wmt19-en-de
+
+Function of streamlit library consulted with and some of its code inspired by:
+https://docs.streamlit.io/library/get-started
+
+Session states in Streamlit:
+https://docs.streamlit.io/library/api-reference/session-state
+
+Changing the button to disabled after interaction:
+https://discuss.streamlit.io/t/disable-interactables-after-suitable-interaction/45604
+
+Retrieving names of uploaded files:
+https://docs.streamlit.io/knowledge-base/using-streamlit/retrieve-filename-uploaded
+
+Idea how to make the social sharing button:
+https://discuss.streamlit.io/t/has-anyone-implemented-a-social-sharing-widget/20778
+Guide from Twitter for understanding the HTML code:
+https://publish.twitter.com/#
+
+How to save audio files from API responses:
+https://youtu.be/_j7JEDWuqLE?feature=shared&t=408
+
+How to get the current day and time for the file name:
+https://www.geeksforgeeks.org/python-strftime-function/
+
+Headers for API for Streamlit cloud:
+https://discuss.streamlit.io/t/my-app-works-locally-but-fails-to-work-when-deployed/35724/6
+
+Animations in Streamlit:
+https://www.youtube.com/watch?v=gk5gS47DcYs&list=PLhTEgijK5xOd563W_QBy5ebjO4goxw9om&index=3
+
+Image:
+https://www.pngegg.com/en/png-bbdmg

@@ -1,19 +1,16 @@
-# import the library for getting API
+# import the library for handling API
 import requests
 
-# import the library for accessing environment variables
-import os
-
-# import library time to give time for retrying to connect to the API
+# import library time to measure time for retrying to connect to the API
 import time
 
 # import streamlit to create widgets to be displayed in the main app
 import streamlit as st
 
-
-# load the PONS API KEY from the keys.env to a string variable used for calling the API
+# load the API KEY from st.secrets (used to authenticate API requests)
 api_key = st.secrets["API_KEY"]
 
+# define a function to identify the object on an image through AI model
 def get_the_object_name(image):
 	# define the API url
 	url = "https://api-inference.huggingface.co/models/google/vit-base-patch16-224"
@@ -35,13 +32,15 @@ def get_the_object_name(image):
 		# make the format as string so it can be noticed by the while loop condition
 		api_status_object_analysis = str(api_status_object_analysis)
 		print(api_status_object_analysis)
-		time.sleep(2)
+		# in case the API request failed, wait for two seconds before retrying
+		if api_status_object_analysis != "<Response [200]>":
+			time.sleep(2)
 		# increase the number of attempts to reach API by 1
 		api_object_analysis_try += 1
 
-	# if the API connection was successful, do the actual job and get the translation from a working API
+	# if the API connection was successful, do the actual job and get the object name from a working API
 	if api_object_analysis_try != 10:
-		# get the response using the URL, headers, and image data; convert the response into a readable format
+		# get the response using the URL, headers, and image data; convert the response into a readable format (JSON)
 		word = requests.post(url, headers=headers, data=image).json()
 		# get the most probable object on the photo according to the model and the label of it
 		print(word)
@@ -55,12 +54,13 @@ def get_the_object_name(image):
 		# if there is only one word, nothing else needs to happen
 		else:
 			pass
+		# return the identified object
 		return word
 	# # if the API connection failed, return error to the process function
 	else:
 		return "ERROR"
 
-
+# define a function to translate the object name into German
 def get_the_translation(text):
 	# prepare the translation text using the input from the object identifier
 	translation_input = f"the {text}, the {text}s"
@@ -68,7 +68,10 @@ def get_the_translation(text):
 	# define the API url
 	url = "https://api-inference.huggingface.co/models/facebook/wmt19-en-de"
 	# define the headers for authorization of access to the API
-	headers = {"Authorization": f"Bearer {api_key}"}
+	headers = {'Accept': '*/*',
+ 'Accept-Encoding': 'identity, deflate, compress, gzip',
+ 'Authorization': f"Bearer {api_key}",
+ 'User-Agent': 'python-requests/0.12.1'}
 
 	# set this variable as empty string which will later receive the status message from API
 	api_status_translation = ""
@@ -80,16 +83,18 @@ def get_the_translation(text):
 		api_status_translation = requests.post(url, headers=headers, json={
 			"inputs": translation_input,
 		})
-		# make the format as string so it can be noticed by the while loop condition
+		# make the format as string, so it can be noticed by the while loop condition
 		api_status_translation = str(api_status_translation)
 		print(api_status_translation)
-		time.sleep(2)
+		# in case the API request failed, wait for two seconds before retrying
+		if api_status_translation != "<Response [200]>":
+			time.sleep(2)
 		# increase the number of attempts to reach API by 1
 		api_status_translation_try += 1
 
 	# if the API connection was successful, do the actual job and get the translation from a working API
 	if api_status_translation_try != 10:
-		# load the response from the translation model
+		# load the response from the translation model and convert it into a readable format (JSON)
 		translation = requests.post(url, headers=headers, json={
 			"inputs": translation_input,
 		}).json()
@@ -106,28 +111,28 @@ def get_the_translation(text):
 
 # put the functions for analysing objects and then translating them into German together
 def process(images):
-	# define a variable which will store the list of translations for each image uploaded
+	# define a variable which will store the list of translations (pair: English word, German word)
+	# for each image uploaded
 	list_of_translations = []
-	# define a variable which stores the length of the images for main app to know how many items
-	# need to be displayed
+	# define a variable which will store the number of images for main app to know how many items to display
 	number_of_items = None
 
 	# define percentage as 0 (will be used to display the progress of the function in st.status)
 	percentage = 0
-	# do everything within a with st.status function to enable display the progress of function to the user
+	# do everything within a with st.status to enable display of the progress of the function to the user
 	with st.status(f"Processing your images ({percentage}% completed)", expanded=True) as status:
 		# define percentage increase as 100 divided by the number of uploaded images and this divided by two
-		# (each image has two steps)
+		# (each image has two steps - object identification and translation to German)
 		percentage_increase = round((100 / len(images))/2)
 		# for as many images as the user uploaded
 		for i in range(len(images)):
-			# Check if there are no errors in the list of translations yet. If not, continue.
+			# check if there are no errors in the list of translations yet. If not, continue.
 			if "ERROR" not in list_of_translations:
 				# get the image you are processing from the list of uploaded images
 				image = images[i]
 				# add another percentage increase
 				percentage = percentage + percentage_increase
-				# display the current percentage state in st.status (after successful step)
+				# display the current percentage state in st.status (after successful previous step)
 				status.update(label=f"Processing your images ({percentage-percentage_increase}% completed)")
 				# write to the status that the object is being identified on the image (first part)
 				st.write(f"🔎 Identifying the object on the image *{image.name}*")
@@ -135,7 +140,7 @@ def process(images):
 				object_name = get_the_object_name(image)
 				# if the API works correctly and does not return an error
 				if object_name != "ERROR":
-					# add another percentage increase (after successful step)
+					# add another percentage increase (after successful previous step)
 					percentage = percentage + percentage_increase
 					# display the current percentage state in st.status
 					status.update(label=f"Processing your images ({percentage-percentage_increase}% completed)")
@@ -159,10 +164,11 @@ def process(images):
 		if "ERROR" not in list_of_translations:
 			# set the number of items to the actual number of images
 			number_of_items = len(images)
+		# if there was an error in the process
 		else:
 			# set the number of items to 0 so the main app does not show incomplete and error-containing result
 			number_of_items = 0
-			# display an error for 7 seconds informing the user that API connection failed
+			# display an error message for 7 seconds informing the user that API connection failed
 			with st.empty():
 				for i in range(7):
 					st.error('The connection to the API which processes your image failed. Please refresh and try again.',
@@ -173,10 +179,11 @@ def process(images):
 		status.update(label="Images processed!", state="complete", expanded=False)
 
 	# return the list of translations and number of items to the main app as session states
-	# as they are not rewritten once the app reloads like variables
+	# as they are not rewritten once the app code reruns like variables
 	# (for example after an interaction with a widget) and are valid for the whole session
 	st.session_state["result"] = list_of_translations
 	st.session_state["number_of_items"] = number_of_items
 
+	# this will enable the user to change pages in menu again after this German words generation has finished
 	st.session_state["no_menu_changing"] = False
 
