@@ -1,0 +1,1 @@
+This file is here only so that Github keeps this directory for the app to work properly.
