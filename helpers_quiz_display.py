@@ -9,12 +9,16 @@ def display_tab_content(number_of_question):
     # lower the input to this function by one because Python lists start at 0, not 1
     nr = number_of_question - 1
 
+    # ask user for the answer with instructions
+    word_guess = st.text_input("What is the word? Write both the definite article and the word.", key=f"input {nr}")
+
     # blank out the word to be guessed in the sentence
     sentence = st.session_state["quiz_sentences"][nr].replace(st.session_state["quiz_words"][nr], "___ ______")
     # write this blanked out sentence as a subheader
     st.subheader(sentence)
-    # ask user for the answer with instructions
-    word_guess = st.text_input("What is the word? Write both the definite article and the word.", key=f"input {nr}")
+
+    # remind user of the generated words user can choose from in the quiz
+    st.markdown(f'*Possible answers: {st.session_state["quiz_help"][0]}, {st.session_state["quiz_help"][1]}, {st.session_state["quiz_help"][2]}*')
 
     # if the user answered already
     if len(word_guess) > 0:

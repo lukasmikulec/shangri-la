@@ -115,12 +115,21 @@ def generate_quiz(word_list):
 
 	# define a list in which quiz words will be stored (plural has to go away)
 	quiz_words = []
+
+	# define a list in which quiz words in the original order will be stored to display as help for the user
+	# to know which words to choose from when answering the question
+	quiz_help = []
+
 	# remove the plurals from the generated words and put them into the quiz_words list
 	for i in range(len(word_list)):
 		# take the German words from the original word list
 		word = word_list[i][0]
 		# remove the plural form after the comma (removes comma and space too)
 		word = word[:word.find(",")]
+
+		# take the value of "word" variable and assign it to quiz helper word (before formatting it for other purposes)
+		quiz_helper_word = word
+
 		# take the first letter of the word and capitalize it
 		first_letter = word[0].upper()
 		# recreate the word with capitalized first letter by putting the capitalized letter and the rest of the
@@ -128,6 +137,12 @@ def generate_quiz(word_list):
 		word = first_letter + word[1:]
 		# add the word to the quiz words list to be used in the sentence writing function
 		quiz_words.append(word)
+
+		# add the helper word to quiz help list
+		quiz_help.append(quiz_helper_word)
+
+	# store the quiz helper words as session state to be accessed later
+	st.session_state["quiz_help"] = quiz_help
 
 	# reshuffle the words in list randomly so the user does not know which word is where
 	random.shuffle(quiz_words)
