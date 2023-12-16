@@ -41,5 +41,8 @@ https://discuss.streamlit.io/t/my-app-works-locally-but-fails-to-work-when-deplo
 Animations in Streamlit:
 https://www.youtube.com/watch?v=gk5gS47DcYs&list=PLhTEgijK5xOd563W_QBy5ebjO4goxw9om&index=3
 
+Change the size limit for uploading files:
+https://docs.streamlit.io/knowledge-base/deploy/increase-file-uploader-limit-streamlit-cloud
+
 Image:
 https://www.pngegg.com/en/png-bbdmg
