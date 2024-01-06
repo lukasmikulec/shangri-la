@@ -191,7 +191,7 @@ elif choice == "Take a quiz":
 
     # if less than 3 images are uploaded, show that at least 3 are required for quiz to be generated
     if st.session_state["number_of_items"] < 3:
-        st.info("To use the quiz function, upload at least 3 images.", icon="ℹ️")
+        st.info("To use the quiz function, please upload at least 3 images.", icon="ℹ️")
     # if 3 or more images are uploaded and German words generated
     else:
         # if the quiz was not yet generated, run the generate quiz function
@@ -205,5 +205,46 @@ elif choice == "Take a quiz":
 elif choice == "About":
     # place the heading
     st.header("About Streetschatz", divider="blue")
-    # place the about text
-    st.markdown("This is the about page.")
+
+    # place subheader
+    st.subheader("What is Streetschatz about?")
+    # place text
+    st.markdown("""
+        Have you ever wanted to call an object by its German name among
+        your German friends but couldn't? Streetschatz is an app which
+        allows you to upload 📤 pictures of everyday projects and instantly
+        get their German 🥨 names. In addition, you can use the Quiz function
+        to better learn 📖 those new words for your everyday conversations.
+        You can also download 📥 the words or sentences with those words as
+        a txt file for future reference.
+        """)
+
+    # place subheader
+    st.subheader("Why the name Streetschatz?")
+    # place text
+    st.markdown("""
+            Schatz means treasure in German, so Streetschatz means finding
+            treasures (new German words) on the street.
+            """)
+
+    # place subheader
+    st.subheader("Who created Streetschatz?")
+    # place text
+    st.markdown("""
+                Streetschatz was created by <a href="https://github.com/lukasmikulec">Lukas Mikulec</a> as part of his
+                Practical experience in Digital Media II course at Leuphana
+                University of Lüneburg in Major Digital Media.
+                
+                View the <a href="https://github.com/lukasmikulec/shangri-la">code on Github</a>.
+                """, unsafe_allow_html=True)
+
+    # place subheader
+    st.subheader("What powers Streetschatz?")
+    # place text
+    st.markdown("""
+                    Streetschatz runs on <a href="https://streamlit.io/cloud">Streamlit Cloud</a>, uses <a href="https://streamlit.io">Streamlit Python library</a> for its UI and is powered by four AI models on <a href="https://huggingface.co/">Hugging Face</a>. Namely:
+* <a href="https://huggingface.co/google/vit-base-patch16-224">google/vit-base-patch16-224</a> for object identification on uploaded pictures
+* <a href="https://huggingface.co/facebook/wmt19-en-de">facebook/wmt19-en-de</a> for translating English words into German
+* <a href="https://huggingface.co/stefan-it/german-gpt2-larger">stefan-it/german-gpt2-larger</a> for writing German sentences
+* <a href="https://huggingface.co/facebook/mms-tts-deu">facebook/mms-tts-deu</a> for creating audios of German sentences in the quiz
+                    """, unsafe_allow_html=True)
