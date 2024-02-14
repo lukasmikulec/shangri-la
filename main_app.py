@@ -43,7 +43,7 @@ if "process_finished" not in st.session_state:
     # User can freely use the menu to change pages because no process is running
     st.session_state["no_menu_changing"] = False
 
-    # No German words were generated (if user goes to quiz page, quiz won't show until at least 3 words
+    # No German words were generated (if user goes to quiz page, quiz will not show until at least 3 words
     # were generated)
     st.session_state["number_of_items"] = 0
 

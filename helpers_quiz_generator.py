@@ -20,16 +20,16 @@ def generate_sentence(word):
     # Define the API url
     url = "https://api-inference.huggingface.co/models/stefan-it/german-gpt2-larger"
     # Define the headers for authorization of access to the API
-    headers = {'Accept': '*/*',
-               'Accept-Encoding': 'identity, deflate, compress, gzip',
-               'Authorization': f"Bearer {api_key}",
-               'User-Agent': 'python-requests/0.12.1'}
+    headers = {"Accept": "*/*",
+               "Accept-Encoding": "identity, deflate, compress, gzip",
+               "Authorization": f"Bearer {api_key}",
+               "User-Agent": "python-requests/0.12.1"}
     # Set this variable as empty string which will later receive the status message from API
     api_status_sentence_generation = ""
     # Set this variable as 0 (no request to API made yet)
     api_sentence_generation_try = 0
 
-    # While API won't return a successful response and the number of retries does not reach 10, keep retrying
+    # While API will not return a successful response and the number of retries does not reach 10, keep retrying
     while api_status_sentence_generation != "<Response [200]>" and api_sentence_generation_try != 10:
         api_status_sentence_generation = requests.post(url,
                                                        headers=headers,
@@ -67,16 +67,16 @@ def generate_audio(sentence):
     # Define the API url
     url = "https://api-inference.huggingface.co/models/facebook/mms-tts-deu"
     # Define the headers for authorization of access to the API
-    headers = {'Accept': '*/*',
-               'Accept-Encoding': 'identity, deflate, compress, gzip',
-               'Authorization': f"Bearer {api_key}",
-               'User-Agent': 'python-requests/0.12.1'}
+    headers = {"Accept": "*/*",
+               "Accept-Encoding": "identity, deflate, compress, gzip",
+               "Authorization": f"Bearer {api_key}",
+               "User-Agent": "python-requests/0.12.1"}
     # Set this variable as empty string which will later receive the status message from API
     api_status_audio_generation = ""
     # Set this variable as 0 (no request to API made yet)
     api_audio_generation_try = 0
 
-    # While API won't return a successful response and the number of retries does not reach 10, keep retrying
+    # While API will not return a successful response and the number of retries does not reach 10, keep retrying
     while api_status_audio_generation != "<Response [200]>" and api_audio_generation_try != 10:
         api_status_audio_generation = requests.post(url,
                                                     headers=headers,

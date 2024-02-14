@@ -21,17 +21,17 @@ def display_tab_content(number_of_question, total_questions):
     # Remind user of the generated words user can choose from in the quiz
     if total_questions == 3:
         # Display three hint words if the quiz has three questions
-        st.markdown(f'*Possible answers: {st.session_state["quiz_help"][0]}, {st.session_state["quiz_help"][1]}, '
-                    f'{st.session_state["quiz_help"][2]}*')
+        st.markdown(f"*Possible answers: {st.session_state['quiz_help'][0]}, {st.session_state['quiz_help'][1]}, "
+                    f"{st.session_state['quiz_help'][2]}*")
     elif total_questions == 4:
         # Display four hint words if the quiz has four questions
-        st.markdown(f'*Possible answers: {st.session_state["quiz_help"][0]}, {st.session_state["quiz_help"][1]}, '
-                    f'{st.session_state["quiz_help"][2]}, {st.session_state["quiz_help"][3]}*')
+        st.markdown(f"*Possible answers: {st.session_state['quiz_help'][0]}, {st.session_state['quiz_help'][1]}, "
+                    f"{st.session_state['quiz_help'][2]}, {st.session_state['quiz_help'][3]}*")
     elif total_questions == 5:
         # Display five hint words if the quiz has five questions
-        st.markdown(f'*Possible answers: {st.session_state["quiz_help"][0]}, {st.session_state["quiz_help"][1]}, '
-                    f'{st.session_state["quiz_help"][2]}, {st.session_state["quiz_help"][3]}, '
-                    f'{st.session_state["quiz_help"][4]}*')
+        st.markdown(f"*Possible answers: {st.session_state['quiz_help'][0]}, {st.session_state['quiz_help'][1]}, "
+                    f"{st.session_state['quiz_help'][2]}, {st.session_state['quiz_help'][3]}, "
+                    f"{st.session_state['quiz_help'][4]}*")
 
     # If the user answered already
     if len(word_guess) > 0:
@@ -72,7 +72,7 @@ def display_results_tab(number_of_quiz_items):
             # Join them into one string
             rest_of_the_sentence = " ".join(rest_of_the_sentence)
             # Display the sentences with the first two (the quiz words) in bold
-            st.markdown(f'{i + 1}. **{first_two_words}** {rest_of_the_sentence}')
+            st.markdown(f"{i + 1}. **{first_two_words}** {rest_of_the_sentence}")
 
         # Assign the output of the txt generating function for sentences to this variable
         file = create_sentences_txt_file(st.session_state["quiz_sentences"])
