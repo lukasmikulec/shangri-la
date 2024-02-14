@@ -92,7 +92,7 @@ if choice == "Identify German words":
 
     # Let user upload images to get the German names of objects on them at the end
     uploaded_photos = st.file_uploader("Tip for upload: Each picture should clearly show only "
-                                       "the object without background noise.",
+                                       "the object without background distractions.",
                                        type=["jpg", "png", "jpeg"],
                                        help="Make sure your photos are in jpg, png, or jpeg format.",
                                        accept_multiple_files=True,
