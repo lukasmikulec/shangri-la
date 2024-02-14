@@ -91,7 +91,8 @@ if choice == "Identify German words":
         st.markdown("3. Upload 3 or more images to take a quiz after upload (left sidebar).")
 
     # Let user upload images to get the German names of objects on them at the end
-    uploaded_photos = st.file_uploader("Upload your photos",
+    uploaded_photos = st.file_uploader("Tip for upload: Each picture should clearly show only "
+                                       "the object without background noise.",
                                        type=["jpg", "png", "jpeg"],
                                        help="Make sure your photos are in jpg, png, or jpeg format.",
                                        accept_multiple_files=True,
