@@ -33,7 +33,7 @@ def generate_sentence(word):
     while api_status_sentence_generation != "<Response [200]>" and api_sentence_generation_try != 10:
         api_status_sentence_generation = requests.post(url,
                                                        headers=headers,
-                                                       json=word)
+                                                       json={"inputs": word, })
         # Make the format as string, so it can be noticed by the while loop condition
         api_status_sentence_generation = str(api_status_sentence_generation)
         # In case the API request failed, wait for two seconds before retrying
@@ -47,7 +47,7 @@ def generate_sentence(word):
         # Get the response using the URL, headers, and image data; convert the response into a readable format
         sentence = requests.post(url,
                                  headers=headers,
-                                 json=word).json()
+                                 json={"inputs": word, }).json()
         # Get the sentence from the response
         sentence = sentence[0]["generated_text"]
         # Only keep the first generated sentence (discard everything after the first dot)
